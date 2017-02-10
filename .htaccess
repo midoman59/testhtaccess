@@ -27,9 +27,13 @@ RewriteCond ^%{REQUEST_URI} \.(jpg|jpeg|gif|png)$ [NC]
 RewriteRule ^ftp/([0-9auto]{1,}x[0-9auto]{1,}(-[nocrop]{4,6})?)?(.*)$ thumb.php?query=$1&thumb=$3 [L,QSA]
 
 
-RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteCond %{REQUEST_FILENAME} !-l
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [L,QSA]
 
 <ifModule mod_headers.c>
 	Header unset ETag
+	Header unset Server
+	Header unset X-Powered-By
 </ifModule>
