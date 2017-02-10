@@ -1,0 +1,35 @@
+
+AuthUserFile C:\wamp64\www\.htpasswd
+AuthName "Acces reserve"
+AuthType Basic
+Require valid-user
+
+# Active le rewriting
+options +followSymlinks
+rewriteEngine on
+RewriteBase /
+
+# Encodage
+AddDefaultCharset UTF-8
+
+#Ajout type ico (favicon)
+addType image/x-icon .ico
+
+#Forbiden
+<filesMatch "^(test.php)$">
+	Order Allow,Deny
+	Deny from All
+</filesMatch>
+
+# Ftp
+RewriteCond %{REQUEST_URI} ^/ftp/
+RewriteCond ^%{REQUEST_URI} \.(jpg|jpeg|gif|png)$ [NC]
+RewriteRule ^ftp/([0-9auto]{1,}x[0-9auto]{1,}(-[nocrop]{4,6})?)?(.*)$ thumb.php?query=$1&thumb=$3 [L,QSA]
+
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php [L,QSA]
+
+<ifModule mod_headers.c>
+	Header unset ETag
+</ifModule>
